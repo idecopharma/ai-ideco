@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Board Pro (Đã Sửa Lỗi)</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* CSS này sẽ không ảnh hưởng website gốc vì mọi thứ
+           đều nằm bên trong #aib-container */
+
+        /* Cài đặt font và màu sắc chính qua CSS Variables */
+        #aib-container {
+            font-family: 'Inter', Arial, sans-serif;
+            
+            /* Màu sắc chủ đề AI */
+            --aib-bg-color: #0d0f2b;
+            --aib-surface-color: #1a1e4a;
+            --aib-primary-color: #00f0ff;
+            --aib-text-primary: #ffffff;
+            --aib-text-secondary: #a0b3f0;
+        }
+
+        /* Cần thiết để khóa cuộn trang nền khi popup mở */
+        body.aib-modal-open {
+            overflow: hidden;
+        }
+
+        /* --- 1. Nút Kích Hoạt (Trigger) --- */
+        #aib-container #aib-trigger {
+            position: fixed;
+            top: 65px;
+            right:450px;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--aib-text-primary);
+            background: linear-gradient(145deg, var(--aib-surface-color), #2a2e6a);
+            border: 2px solid var(--aib-primary-color);
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 15px var(--aib-primary-color), 0 5px 20px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
+            z-index: 998;
+            font-family: 'Inter', Arial, sans-serif;
+        }
+
+        #aib-container #aib-trigger:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 0 25px var(--aib-primary-color), 0 5px 30px rgba(0,0,0,0.5);
+        }
+
+        /* --- 2. Lớp Nền Mờ (Overlay) --- */
+        #aib-container #aib-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+            
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        /* --- 3. Popup (Modal) - Gần Full Màn Hình --- */
+        #aib-container #aib-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 90vw;
+            height: 90vh;
+            
+            background: radial-gradient(circle, var(--aib-surface-color) 0%, var(--aib-bg-color) 100%);
+            border: 1px solid var(--aib-primary-color);
+            border-radius: 20px;
+            box-shadow: 0 0 40px rgba(0, 240, 255, 0.5);
+            
+            z-index: 1600;
+            color: var(--aib-text-primary);
+            
+            display: flex;
+            flex-direction: column;
+            padding: 25px;
+            
+            opacity: 0;
+            visibility: hidden;
+            transform: translate(-50%, -50%) scale(0.95);
+            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+        }
+
+        /* Khi active, LỚP NỀN MỜ sẽ hiện ra */
+        #aib-container #aib-overlay.aib-active {
+            display: block;
+            opacity: 1;
+        }
+        
+        /* Khi active, POPUP sẽ hiện ra */
+        #aib-container #aib-modal.aib-active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* Nút đóng (X) */
+        #aib-container #aib-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 36px;
+            font-weight: bold;
+            color: var(--aib-text-secondary);
+            cursor: pointer;
+            text-decoration: none;
+            transition: color 0.2s, transform 0.2s;
+        }
+        
+        #aib-container #aib-close:hover {
+            color: var(--aib-primary-color);
+            transform: rotate(90deg);
+        }
+
+        /* Tiêu đề của Popup */
+        #aib-container #aib-modal h2 {
+            text-align: center;
+            font-size: 28px;
+            color: var(--aib-text-primary);
+            margin: 0;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--aib-primary-color);
+            flex-shrink: 0;
+        }
+
+        /* --- 4. Lưới chứa Icon --- */
+        #aib-container .aib-grid-wrapper {
+            overflow-y: auto; /* Cho phép cuộn nếu không đủ chỗ */
+            flex-grow: 1;
+            padding-top: 20px;
+        }
+
+        #aib-container .aib-grid {
+            display: grid;
+            gap: 25px;
+            grid-template-columns: repeat(2, 1fr); /* 2 cột trên mobile */
+        }
+
+        /* --- 5. Từng Icon --- */
+        #aib-container .aib-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--aib-text-secondary);
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 15px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        
+        #aib-container .aib-item:hover {
+            background-color: rgba(0, 240, 255, 0.1);
+            transform: translateY(-5px);
+        }
+
+        #aib-container .aib-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%; 
+            margin-bottom: 12px;
+            
+            border: 2px solid var(--aib-primary-color);
+            box-shadow: 
+                inset 0 0 10px rgba(0, 240, 255, 0.5),
+                0 0 15px rgba(0, 240, 255, 0.5);
+
+            /* === PHẦN SỬA LỖI 1 === */
+            /* Ảnh mặc định đã bị VÔ HIỆU HÓA để ưu tiên ảnh riêng */
+            /* background-image: url('https://cdn.imgpile.com/f/vg813er_xl.jpeg'); */
+            
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        #aib-container .aib-item:hover .aib-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 
+                inset 0 0 15px rgba(0, 240, 255, 0.7),
+                0 0 25px rgba(0, 240, 255, 8);
+        }
+
+        /* === PHẦN SỬA LỖI 2 === */
+        /* Khối code này đã được KÍCH HOẠT (xóa bỏ /* bị lỗi) */
+        #aib-container .aib-icon-1 { background-image: url('https://cdn.imgpile.com/f/1UiGSHo_xl.jpg'); }
+        #aib-container .aib-icon-2 { background-image: url('https://cdn.imgpile.com/f/Mp1aYLX_xl.jpg'); }
+        #aib-container .aib-icon-3 { background-image: url('https://cdn.imgpile.com/f/6CauYxv_xl.jpg'); }
+        #aib-container .aib-icon-4 { background-image: url('https://cdn.imgpile.com/f/PSAD1X9_xl.jpg'); }
+        #aib-container .aib-icon-5 { background-image: url('https://cdn.imgpile.com/f/9xD5hF3_xl.jpg'); }
+        #aib-container .aib-icon-6 { background-image: url('https://cdn.imgpile.com/f/ff6aL6c_xl.jpg'); }
+        #aib-container .aib-icon-7 { background-image: url('https://cdn.imgpile.com/f/gdbuIQP_xl.jpg'); }
+        #aib-container .aib-icon-8 { background-image: url('https://cdn.imgpile.com/f/T0AxrIH_xl.jpg'); }
+        #aib-container .aib-icon-9 { background-image: url('https://cdn.imgpile.com/f/gyRxseP_xl.jpg'); }
+        #aib-container .aib-icon-10 { background-image: url('https://cdn.imgpile.com/f/mAU1ZD6_xl.jpg'); }
+		#aib-container .aib-icon-11 { background-image: url('https://cdn.imgpile.com/f/mAU1ZD6_xl.jpg'); }
+		 #aib-container .aib-icon-12 { background-image: url('https://cdn.imgpile.com/f/mAU1ZD6_xl.jpg'); }
+		 #aib-container .aib-icon-13 { background-image: url('https://cdn.imgpile.com/f/mAU1ZD6_xl.jpg'); }
+        #aib-container .aib-icon-14 { background-image: url('https://cdn.imgpile.com/f/4sPHL4H_xl.jpg'); }
+		#aib-container .aib-icon-15 { background-image: url('https://cdn.imgpile.com/f/mAU1ZD6_xl.jpg'); }
+	 #aib-container .aib-icon-16 { background-image: url('https://cdn.imgpile.com/f/mAU1ZD6_xl.jpg'); }
+	  #aib-container .aib-icon-17 { background-image: url('https://cdn.imgpile.com/f/mAU1ZD6_xl.jpg'); }
+	   #aib-container .aib-icon-18 { background-image: url('https://cdn.imgpile.com/f/mAU1ZD6_xl.jpg'); }
+	  #aib-container .aib-icon-19 { background-image: url('https://cdn.imgpile.com/f/mAU1ZD6_xl.jpg'); }
+	 /* === HẾT PHẦN SỬA LỖI === */
+
+
+        #aib-container .aib-title {
+            font-size: 16px;
+            font-weight: 500;
+            text-align: center;
+            color: var(--aib-text-primary);
+        }
+        
+        /* --- Responsive cho Desktop --- */
+        @media (min-width: 768px) {
+            #aib-container .aib-grid {
+                grid-template-columns: repeat(4, 1fr); /* 4 cột */
+            }
+            
+            #aib-container #aib-modal h2 {
+                font-size: 32px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="aib-container">
+
+        <button id="aib-trigger">🚀 Mở AI Board</button>
+
+        <div id="aib-overlay"></div>
+
+        <div id="aib-modal">
+            <a href="#" id="aib-close">&times;</a>
+            <h2>HỆ THỐNG IDECO AI - ĐĂNG NHẬP: baocaoideco@gmail.com</h2>
+            
+            <div class="aib-grid-wrapper">
+                
+                <div class="aib-grid">
+                    
+                    <a href="https://aistudio.google.com/apps/drive/1jOh3bvGXViUSx8lLEw9lDuGCuogH7om1?showPreview=true&showAssistant=true" target="_blank" class="aib-item">
+                        <div class="aib-icon aib-icon-1"></div> 
+                        <span class="aib-title">Bộ phân Pháp Lý IDECO ( chỉ áp dụng ERP đăng từ baocaoideco@gmail.com )</span>
+                    </a>
+                    
+                    <a href="https://kiemtragia.netlify.app/" target="_blank" class="aib-item">
+                        <div class="aib-icon aib-icon-2"></div>
+                        <span class="aib-title">Phân tích đơn CNT -Kiểm tra giá 2 in 1 </span>
+                    </a>
+                    
+                    <a href="https://lockhachhang.netlify.app/" target="_blank" class="aib-item">
+                        <div class="aib-icon aib-icon-3"></div>
+                        <span class="aib-title">Lọc khách hàng hàng</span>
+                    </a>
+                    
+                    <a href="https://phantichdonhangthuoc.netlify.app/" target="_blank" class="aib-item">
+                        <div class="aib-icon aib-icon-4"></div>
+                        <span class="aib-title">PHÂN TÍCH TỔNG HỢP ĐƠN THUỐC- GỞI ĐƠN ĐẶT NCC CHO KẾ TOÁN</span>
+                    </a>
+                    
+                    <a href="https://dubaosanluong.netlify.app/" target="_blank" class="aib-item">
+                        <div class="aib-icon aib-icon-5"></div>
+                        <span class="aib-title">Phân tích dự bán sản lượng</span>
+                    </a>
+                    
+                    <a href="https://aistudio.google.com/apps/drive/1iBckdjf_VCut2LVzFzBfegtF06yJcbFK?showPreview=true&showAssistant=true " target="_blank" class="aib-item">
+                        <div class="aib-icon aib-icon-6"></div>
+                        <span class="aib-title">Tạo ảnh đẹp - poster -banner - mọi thứ</span>
+                    </a>
+                    
+                    <a href="https://trochuyen.netlify.app/" target="_blank" class="aib-item">
+                        <div class="aib-icon aib-icon-7"></div>
+                        <span class="aib-title">Trò chuyện hỏi tư vấn kế toán-kho-bán hàng</span>
+                    </a>
+                    
+                    <a href="/" target="_blank" class="aib-item">
+                        <div class="aib-icon aib-icon-8"></div>
+                        <span class="aib-title"> Phân tích AI - bảng chưa chạy</span>
+                    </a>
+
+                    <a href="https://idecoaibaogia.netlify.app/" target="_blank" class="aib-item">
+                        <div class="aib-icon aib-icon-9"></div> 
+                        <span class="aib-title">Tạo báo giá riêng bới AI (https://idecoaibaogia.netlify.app/)</span>
+                    </a>
+
+                    <a href="https://phantichphieu.netlify.app/" target="_blank" class="aib-item">
+                        <div class="aib-icon aib-icon-10"></div> 
+                        <span class="aib-title">Phân tích phiếu hàng Thuốc- ra biên bảng lưu SOP 2 in 1</span>
+                    </a>
+					
+					  <a href="https://aistudio.google.com/apps/drive/1iZJ8WHxQqhTnxV4oTJy3FpQSAVlpqnfg?showAssistant=true&showPreview=truea" target="_blank" class="aib-item">
+                        <div class="aib-icon aib-icon-11"></div> 
+                        <span class="aib-title">IDECO AI tạo ảnh đẹp - giải trí  </span>
+                    </a>
+					  <a href="https://ketoanideco.netlify.app" target="_blank" class="aib-item">
+                        <div class="aib-icon aib-icon-12"></div> 
+                        <span class="aib-title">IDECO AI phân tích kế toán-tra cứu</span>
+                    </a>
+					 </a>
+					  <a href="https://trichphieuhang.netlify.app" target="_blank" class="aib-item">
+                        <div class="aib-icon aib-icon-13"></div> 
+                        <span class="aib-title">IDECO AI Trích phiếu hàng ( bảng dự phòng)</span>
+                    </a>
+					
+					  <a href="https://idecoweb.netlify.app/" target="_blank" class="aib-item">
+                        <div class="aib-icon aib-icon-14"></div> 
+                        <span class="aib-title">IDECO AI TẠO ẢNH ĐẸP - TẠO VIDEO FREE !</span>
+                    </a>
+					  <a href="https://lancuoi.netlify.app" target="_blank" class="aib-item">
+                        <div class="aib-icon aib-icon-15"></div> 
+                        <span class="aib-title">IDECO AI TỔNG HỢP ĐƠN - PHÂN TÍCH HÓA ĐƠN VAT CHO MISA</span>
+                    </a>
+					  <a href="https://ideco-prompt.netlify.app" target="_blank" class="aib-item">
+                        <div class="aib-icon aib-icon-16"></div> 
+                        <span class="aib-title">IDECO AI - TẠO PROMPT TẠO POSTER </span>
+                    </a>
+					 <a href="https://aistudio.google.com/apps/drive/1jp1htMUYctILOb5BJ-jwEBMHl37Oje5P?showAssistant=true&resourceKey=&showPreview=true&fullscreenApplet=true" target="_blank" class="aib-item">
+                        <div class="aib-icon aib-icon-17"></div> 
+                        <span class="aib-title">IDECO AI - TẠO PROMPT TẠO POSTER -DỰ PHÒNG( ERP đăng: baocaoideco@gmail.com</span>
+                    </a>
+					<a href="https://aistudio.google.com/apps/drive/16fG5pi7OBeO2wYWnr4syfWs0Vv_nh4CH?showAssistant=true&showPreview=true" target="_blank" class="aib-item">
+                        <div class="aib-icon aib-icon-18"></div>
+                        <span class="aib-title">PHÂN TÍCH ĐƠN HÀNG - PHÂN TÍCH XUẤT HD VAT THUỐC ( ERP đăng baocaoideco@gmail.com(</span>
+                    </a>
+<a href="https://timnpp.netlify.app/" target="_blank" class="aib-item">
+                        <div class="aib-icon aib-icon-19"></div>
+                        <span class="aib-title">TÌM KIẾM KHÁCH HÀNG - CÔNG TY DƯỢC BỞI IDECO AI (DÁN NỘI DUNG WEBSITE TÊN CÔNG TY)</span>
+                    </a>
+
+
+                </div> </div> </div> </div> <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            const container = document.getElementById('aib-container');
+            if (!container) return;
+
+            const triggerButton = document.getElementById('aib-trigger');
+            const overlay = document.getElementById('aib-overlay');
+            const modal = document.getElementById('aib-modal');
+            const closeButton = document.getElementById('aib-close');
+
+            if (!triggerButton || !overlay || !modal || !closeButton) {
+                console.error('AI Board: Thiếu một số element HTML quan trọng.');
+                return;
+            }
+
+            function openPopup() {
+                overlay.classList.add('aib-active');
+                modal.classList.add('aib-active');
+                document.body.classList.add('aib-modal-open');
+            }
+
+            function closePopup(event) {
+                if(event) {
+                    event.preventDefault();
+                }
+                overlay.classList.remove('aib-active');
+                modal.classList.remove('aib-active');
+                document.body.classList.remove('aib-modal-open');
+            }
+
+            triggerButton.addEventListener('click', openPopup);
+            closeButton.addEventListener('click', closePopup);
+            
+            overlay.addEventListener('click', function(event) {
+                if (event.target === overlay) {
+                    closePopup(null);
+                }
+            });
+
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape' && modal.classList.contains('aib-active')) {
+                    closePopup(null);
+                }
+            });
+            
+        });
+    </script>
+
+</body>
+</html>
