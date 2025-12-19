@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* === BIẾN MÀU SẮC === */
+        /* === BIáº¾N MÃU Sáº®C === */
         #aib-container {
             font-family: 'Inter', Arial, sans-serif;
             --aib-bg-dark: #0a0c24;
@@ -28,7 +28,7 @@
 
         body.aib-modal-open { overflow: hidden; }
 
-        /* NÚT KÍCH HOẠT */
+        /* NÃT KÃCH HOáº T */
         #aib-container #aib-trigger {
             position: fixed; top: 65px; right: 450px;
             padding: 10px 24px; font-size: 15px; font-weight: 600;
@@ -70,18 +70,18 @@
             flex-grow: 1;
             padding: 30px;
             padding-bottom: 50px; 
-            overflow-y: auto; /* Cuộn cả trang nếu cần */
+            overflow-y: auto; /* Cuá»n cáº£ trang náº¿u cáº§n */
             display: grid;
             gap: 25px;
             grid-template-columns: 1fr;
             align-items: start;
         }
 
-        /* Desktop: 3 Cột */
+        /* Desktop: 3 Cá»t */
         @media (min-width: 1024px) {
             .aib-dashboard-content {
                 grid-template-columns: 1fr 1fr 1fr;
-                grid-template-rows: auto auto; /* Hàng trên tự động, hàng dưới tự động */
+                grid-template-rows: auto auto; /* HÃ ng trÃªn tá»± Äá»ng, hÃ ng dÆ°á»i tá»± Äá»ng */
                 grid-template-areas: 
                     "legal inventory sales"
                     "special special special";
@@ -92,9 +92,9 @@
             .area-special { grid-area: special; }
             
             .area-special .aib-card-list {
-                /* Khu vực Special xếp ngang */
+                /* Khu vá»±c Special xáº¿p ngang */
                 display: flex; flex-direction: row; flex-wrap: wrap; gap: 20px;
-                max-height: none !important; /* Riêng thằng cuối không cần cuộn dọc */
+                max-height: none !important; /* RiÃªng tháº±ng cuá»i khÃ´ng cáº§n cuá»n dá»c */
                 overflow-y: visible !important;
             }
             .area-special .aib-tool-card { flex: 1; min-width: 250px; }
@@ -107,40 +107,40 @@
             border: 1px solid rgba(255,255,255,0.05);
             display: flex; flex-direction: column;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            max-height: 100%; /* Để panel không bị vỡ */
+            max-height: 100%; /* Äá» panel khÃ´ng bá» vá»¡ */
         }
 
         .aib-panel-header {
             padding: 15px 18px; font-size: 14px; font-weight: 700; color: #fff;
-            display: flex; align-items: center; justify-content: space-between; /* Đẩy số lượng sang phải */
+            display: flex; align-items: center; justify-content: space-between; /* Äáº©y sá» lÆ°á»£ng sang pháº£i */
             border-bottom: 1px solid rgba(255,255,255,0.05);
             text-transform: uppercase;
-            flex-shrink: 0; /* Header luôn cố định */
+            flex-shrink: 0; /* Header luÃ´n cá» Äá»nh */
         }
         
-        /* Màu Header */
+        /* MÃ u Header */
         .area-legal .aib-panel-header { background: linear-gradient(90deg, rgba(33, 150, 243, 0.15), transparent); border-left: 4px solid var(--color-legal); color: var(--color-legal); }
         .area-inventory .aib-panel-header { background: linear-gradient(90deg, rgba(76, 175, 80, 0.15), transparent); border-left: 4px solid var(--color-inv); color: var(--color-inv); }
         .area-sales .aib-panel-header { background: linear-gradient(90deg, rgba(156, 39, 176, 0.15), transparent); border-left: 4px solid var(--color-sales); color: var(--color-sales); }
         .area-special .aib-panel-header { background: linear-gradient(90deg, rgba(255, 193, 7, 0.15), transparent); border-left: 4px solid var(--color-special); color: var(--color-special); }
 
-        /* Badge số lượng */
+        /* Badge sá» lÆ°á»£ng */
         .aib-count-badge {
             background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 10px; font-size: 12px;
         }
 
-        /* === DANH SÁCH CUỘN (SCROLLABLE LIST) === */
+        /* === DANH SÃCH CUá»N (SCROLLABLE LIST) === */
         .aib-card-list {
             padding: 15px;
             display: flex; flex-direction: column; gap: 10px;
             
-            /* TẠO THANH TRƯỢT TẠI ĐÂY */
-            max-height: 55vh; /* Chiều cao tối đa = 55% chiều cao màn hình */
-            overflow-y: auto; /* Tự động hiện thanh cuộn nếu dài quá */
+            /* Táº O THANH TRÆ¯á»¢T Táº I ÄÃY */
+            max-height: 55vh; /* Chiá»u cao tá»i Äa = 55% chiá»u cao mÃ n hÃ¬nh */
+            overflow-y: auto; /* Tá»± Äá»ng hiá»n thanh cuá»n náº¿u dÃ i quÃ¡ */
             overflow-x: hidden;
         }
 
-        /* Tùy chỉnh thanh cuộn cho đẹp (Chrome/Safari/Edge) */
+        /* TÃ¹y chá»nh thanh cuá»n cho Äáº¹p (Chrome/Safari/Edge) */
         .aib-card-list::-webkit-scrollbar { width: 6px; }
         .aib-card-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
         .aib-card-list::-webkit-scrollbar-thumb { background-color: rgba(255,255,255,0.2); border-radius: 10px; }
@@ -153,7 +153,7 @@
             background: rgba(255,255,255,0.03);
             border-radius: 8px; text-decoration: none;
             transition: all 0.2s; border: 1px solid transparent;
-            flex-shrink: 0; /* Không cho card bị co lại */
+            flex-shrink: 0; /* KhÃ´ng cho card bá» co láº¡i */
         }
         .aib-tool-card:hover { background: rgba(255,255,255,0.08); transform: translateX(5px); }
         
@@ -185,7 +185,7 @@
         .ic-9 { background-image: url('https://cdn.imgpile.com/f/gyRxseP_xl.jpg'); }
         .ic-10 { background-image: url('https://cdn.imgpile.com/f/mAU1ZD6_xl.jpg'); }
         .ic-14 { background-image: url('https://cdn.imgpile.com/f/4sPHL4H_xl.jpg'); }
-        /* Icon mặc định */
+        /* Icon máº·c Äá»nh */
         .ic-11, .ic-12, .ic-13, .ic-15, .ic-16, .ic-17, .ic-18, .ic-19, .ic-20 {
             background-image: url('https://cdn.imgpile.com/f/mAU1ZD6_xl.jpg');
         }
@@ -195,12 +195,12 @@
 
     <div id="aib-container">
 
-        <button id="aib-trigger">🚀 MỞ AI BOARD</button>
+        <button id="aib-trigger">ð Má» AI BOARD</button>
         <div id="aib-overlay"></div>
 
         <div id="aib-modal">
             <div class="aib-modal-header">
-                <h2>HỆ THỐNG IDECO AI</h2>
+                <h2>Há» THá»NG IDECO AI</h2>
                 <div id="aib-close">&times;</div>
             </div>
             
@@ -208,88 +208,88 @@
 
                 <div class="aib-panel area-legal">
                     <div class="aib-panel-header">
-                        <span class="aib-header-title">⚖️ PHÁP CHẾ & ĐƠN HÀNG</span>
+                        <span class="aib-header-title">âï¸ PHÃP CHáº¾ & ÄÆ N HÃNG</span>
                         </div>
                     <div class="aib-card-list">
                         <a href="https://aistudio.google.com/apps/drive/1jOh3bvGXViUSx8lLEw9lDuGCuogH7om1?showPreview=true&showAssistant=true" target="_blank" class="aib-tool-card">
                             <div class="aib-mini-icon ic-1"></div>
-                            <div class="aib-text-content"><span class="aib-tool-title">1. Bộ Phận Pháp Lý Công Ty</span><span class="aib-tool-sub">Soạn thảo hợp đồng</span></div>
+                            <div class="aib-text-content"><span class="aib-tool-title">1. Bá» Pháº­n PhÃ¡p LÃ½ CÃ´ng Ty</span><span class="aib-tool-sub">Soáº¡n tháº£o há»£p Äá»ng</span></div>
                         </a>
                         <a href="https://tracuuthuoc.netlify.app/" target="_blank" class="aib-tool-card">
                             <div class="aib-mini-icon ic-2"></div>
-                            <div class="aib-text-content"><span class="aib-tool-title">2. Tra Cứu Giá Thuốc</span><span class="aib-tool-sub">Giá kê khai, dược thư</span></div>
+                            <div class="aib-text-content"><span class="aib-tool-title">2. Tra Cá»©u GiÃ¡ Thuá»c</span><span class="aib-tool-sub">GiÃ¡ kÃª khai, dÆ°á»£c thÆ°</span></div>
                         </a>
                         <a href="https://phantichdonhangthuoc.netlify.app/" target="_blank" class="aib-tool-card">
                             <div class="aib-mini-icon ic-3"></div>
-                            <div class="aib-text-content"><span class="aib-tool-title">3. Tổng hợp đơn thuốc/ ngày - yêu cầu mua thuốc</span><span class="aib-tool-sub">Dự báo & đặt hàng</span></div>
+                            <div class="aib-text-content"><span class="aib-tool-title">3. Tá»ng há»£p ÄÆ¡n thuá»c/ ngÃ y - yÃªu cáº§u mua thuá»c</span><span class="aib-tool-sub">Dá»± bÃ¡o & Äáº·t hÃ ng</span></div>
                         </a>
                         <a href="https://aistudio.google.com/apps/drive/1GLirexPXzFXhfDblEs-cXNS8VF-Jv84a?showPreview=true&showAssistant=true&fullscreenApplet=true" target="_blank" class="aib-tool-card">
                             <div class="aib-mini-icon ic-4"></div>
-                            <div class="aib-text-content"><span class="aib-tool-title">4. Tổng hợp đơn thuốc/ngày - yêu cầu mua thuốc</span><span class="aib-tag-backup">Backup</span></div>
+                            <div class="aib-text-content"><span class="aib-tool-title">4. Tá»ng há»£p ÄÆ¡n thuá»c/ngÃ y - yÃªu cáº§u mua thuá»c</span><span class="aib-tag-backup">Backup</span></div>
                         </a>
                     </div>
                 </div>
 
                 <div class="aib-panel area-inventory">
                     <div class="aib-panel-header">
-                        <span class="aib-header-title">📦 KHO VẬN & KIỂM TRA</span>
+                        <span class="aib-header-title">ð¦ KHO Váº¬N & KIá»M TRA</span>
                     </div>
                     <div class="aib-card-list">
                         <a href="https://kiemtracnt-dathang.netlify.app/" target="_blank" class="aib-tool-card">
                             <div class="aib-mini-icon ic-5"></div>
-                            <div class="aib-text-content"><span class="aib-tool-title">5. Kiểm Tra Giá CNT- Dự báo đặt mua thuốc</span><span class="aib-tool-sub">So sánh giá chuỗi Nhà thuốc</span></div>
+                            <div class="aib-text-content"><span class="aib-tool-title">5. Kiá»m Tra GiÃ¡ CNT- Dá»± bÃ¡o Äáº·t mua thuá»c</span><span class="aib-tool-sub">So sÃ¡nh giÃ¡ chuá»i NhÃ  thuá»c</span></div>
                         </a>
                         <a href="https://aistudio.google.com/apps/drive/1shNnk8jYFKkzL-inpvpIKjkP6gc_PvN0?showPreview=true&showAssistant=true&fullscreenApplet=true" target="_blank" class="aib-tool-card">
                             <div class="aib-mini-icon ic-6"></div>
-                            <div class="aib-text-content"><span class="aib-tool-title">6. Kiểm tra giá CNT -dự báo đặt mua thuốc(Backup)</span><span class="aib-tag-backup">Backup</span></div>
+                            <div class="aib-text-content"><span class="aib-tool-title">6. Kiá»m tra giÃ¡ CNT -dá»± bÃ¡o Äáº·t mua thuá»c(Backup)</span><span class="aib-tag-backup">Backup</span></div>
                         </a>
                         <a href="https://phantichphieu.netlify.app/" target="_blank" class="aib-tool-card">
                             <div class="aib-mini-icon ic-7"></div>
-                            <div class="aib-text-content"><span class="aib-tool-title">7. Xử Lý Phiếu thuốc giao FEFO</span><span class="aib-tool-sub">Nhập liệu biên bản-kho</span></div>
+                            <div class="aib-text-content"><span class="aib-tool-title">7. Xá»­ LÃ½ Phiáº¿u thuá»c giao FEFO</span><span class="aib-tool-sub">Nháº­p liá»u biÃªn báº£n-kho</span></div>
                         </a>
                         <a href="https://aistudio.google.com/apps/drive/1fHglOZ1s6mOb0TivIkHPiV8jQVlcurf-?showPreview=true&showAssistant=true&fullscreenApplet=true" target="_blank" class="aib-tool-card">
                             <div class="aib-mini-icon ic-8"></div>
-                            <div class="aib-text-content"><span class="aib-tool-title">8. Xử Lý Phiếu thuốc giao FEFO (Backup)</span><span class="aib-tag-backup">Backup</span></div>
+                            <div class="aib-text-content"><span class="aib-tool-title">8. Xá»­ LÃ½ Phiáº¿u thuá»c giao FEFO (Backup)</span><span class="aib-tag-backup">Backup</span></div>
                         </a>
                         <a href="https://lancuoi.netlify.app" target="_blank" class="aib-tool-card">
                             <div class="aib-mini-icon ic-9"></div>
-                            <div class="aib-text-content"><span class="aib-tool-title">9. Tổng hợp đơn thuốc & VAT MISA</span><span class="aib-tool-sub">Tổng hợp đơn hàng- Hóa đơn VAT</span></div>
+                            <div class="aib-text-content"><span class="aib-tool-title">9. Tá»ng há»£p ÄÆ¡n thuá»c & VAT MISA</span><span class="aib-tool-sub">Tá»ng há»£p ÄÆ¡n hÃ ng- HÃ³a ÄÆ¡n VAT</span></div>
                         </a>
                         <a href="https://aistudio.google.com/apps/drive/16fG5pi7OBeO2wYWnr4syfWs0Vv_nh4CH?showAssistant=true&showPreview=true" target="_blank" class="aib-tool-card">
                             <div class="aib-mini-icon ic-10"></div>
-                            <div class="aib-text-content"><span class="aib-tool-title">10. Tổng hợp đơn thuốc & VAT MISA (Backup)</span><span class="aib-tag-backup">Backup</span></div>
+                            <div class="aib-text-content"><span class="aib-tool-title">10. Tá»ng há»£p ÄÆ¡n thuá»c & VAT MISA (Backup)</span><span class="aib-tag-backup">Backup</span></div>
                         </a>
                     </div>
                 </div>
 
                 <div class="aib-panel area-sales">
                     <div class="aib-panel-header">
-                        <span class="aib-header-title">🎨 KINH DOANH & MKT</span>
+                        <span class="aib-header-title">ð¨ KINH DOANH & MKT</span>
                     </div>
                     <div class="aib-card-list">
                         <a href="https://timnpp.netlify.app/" target="_blank" class="aib-tool-card">
                             <div class="aib-mini-icon ic-11"></div>
-                            <div class="aib-text-content"><span class="aib-tool-title">11. Tìm khách hàng với tra Cứu SĐT KH</span><span class="aib-tool-sub">Công cụ Sales 01</span></div>
+                            <div class="aib-text-content"><span class="aib-tool-title">11. TÃ¬m khÃ¡ch hÃ ng vá»i tra Cá»©u SÄT KH</span><span class="aib-tool-sub">CÃ´ng cá»¥ Sales 01</span></div>
                         </a>
                         <a href="https://lockhachhang.netlify.app/" target="_blank" class="aib-tool-card">
                             <div class="aib-mini-icon ic-12"></div>
-                            <div class="aib-text-content"><span class="aib-tool-title">12. Lọc tìm kiếm khách hàng từ link web</span><span class="aib-tool-sub">Công cụ Sales 02</span></div>
+                            <div class="aib-text-content"><span class="aib-tool-title">12. Lá»c tÃ¬m kiáº¿m khÃ¡ch hÃ ng tá»« link web</span><span class="aib-tool-sub">CÃ´ng cá»¥ Sales 02</span></div>
                         </a>
                         <a href="https://ideco-prompt.netlify.app" target="_blank" class="aib-tool-card">
                             <div class="aib-mini-icon ic-13"></div>
-                            <div class="aib-text-content"><span class="aib-tool-title">13. Tạo Prompt Poster </span><span class="aib-tool-sub">Content quảng cáo</span></div>
+                            <div class="aib-text-content"><span class="aib-tool-title">13. Táº¡o Prompt Poster </span><span class="aib-tool-sub">Content quáº£ng cÃ¡o</span></div>
                         </a>
                         <a href="https://aistudio.google.com/apps/drive/1jp1htMUYctILOb5BJ-jwEBMHl37Oje5P?showAssistant=true&resourceKey=&showPreview=true&fullscreenApplet=true" target="_blank" class="aib-tool-card">
                             <div class="aib-mini-icon ic-14"></div>
-                            <div class="aib-text-content"><span class="aib-tool-title">14. Tạo Prompt Poster (Backup)</span><span class="aib-tag-backup">Backup</span></div>
+                            <div class="aib-text-content"><span class="aib-tool-title">14. Táº¡o Prompt Poster (Backup)</span><span class="aib-tag-backup">Backup</span></div>
                         </a>
                         <a href="https://idecoweb.netlify.app/" target="_blank" class="aib-tool-card">
                             <div class="aib-mini-icon ic-15"></div>
-                            <div class="aib-text-content"><span class="aib-tool-title">15. Tạo Ảnh & Video</span><span class="aib-tool-sub">Thiết kế & Giải trí</span></div>
+                            <div class="aib-text-content"><span class="aib-tool-title">15. Táº¡o áº¢nh & Video</span><span class="aib-tool-sub">Thiáº¿t káº¿ & Giáº£i trÃ­</span></div>
                         </a>
                         <a href="https://aistudio.google.com/apps/drive/1iBckdjf_VCut2LVzFzBfegtF06yJcbFK?showPreview=true&showAssistant=true" target="_blank" class="aib-tool-card">
                             <div class="aib-mini-icon ic-16"></div>
-                            <div class="aib-text-content"><span class="aib-tool-title">16. Tạo Ảnh (Backup)</span><span class="aib-tag-backup">Backup</span></div>
+                            <div class="aib-text-content"><span class="aib-tool-title">16. Táº¡o áº¢nh (Backup)</span><span class="aib-tag-backup">Backup</span></div>
                         </a>
                          <a href="https://capturevideo.netlify.app/" target="_blank" class="aib-tool-card">
                             <div class="aib-mini-icon ic-17"></div>
@@ -301,20 +301,20 @@
 
                 <div class="aib-panel area-special">
                     <div class="aib-panel-header">
-                        <span class="aib-header-title">🤖 ĐÀO TẠO & NGHIỆP VỤ</span>
+                        <span class="aib-header-title">ð¤ ÄÃO Táº O & NGHIá»P Vá»¤</span>
                     </div>
                     <div class="aib-card-list">
                         <a href="https://trochuyen.netlify.app/" target="_blank" class="aib-tool-card">
                             <div class="aib-mini-icon ic-18"></div>
-                            <div class="aib-text-content"><span class="aib-tool-title">18. Tư Vấn Kế toán Kho - bán hàng bằng voice</span><span class="aib-tool-sub">Hỏi đáp Voice</span></div>
+                            <div class="aib-text-content"><span class="aib-tool-title">18. TÆ° Váº¥n Káº¿ toÃ¡n Kho - bÃ¡n hÃ ng báº±ng voice</span><span class="aib-tool-sub">Há»i ÄÃ¡p Voice</span></div>
                         </a>
                         <a href="https://ketoanideco.netlify.app" target="_blank" class="aib-tool-card">
                             <div class="aib-mini-icon ic-19"></div>
-                            <div class="aib-text-content"><span class="aib-tool-title">19. Tìm hiểu nghiệp vụ kế toán</span><span class="aib-tool-sub">Hỏi đáp chuyên môn</span></div>
+                            <div class="aib-text-content"><span class="aib-tool-title">19. TÃ¬m hiá»u nghiá»p vá»¥ káº¿ toÃ¡n</span><span class="aib-tool-sub">Há»i ÄÃ¡p chuyÃªn mÃ´n</span></div>
                         </a>
                         <a href="https://aistudio.google.com/apps/drive/1VpHVEXajEKdJG-NcWJeKsj5qicPoeOkJ?showPreview=true&showAssistant=true" target="_blank" class="aib-tool-card">
                             <div class="aib-mini-icon ic-20"></div>
-                            <div class="aib-text-content"><span class="aib-tool-title">20. Tạo Báo Giá Riêng</span><span class="aib-tool-sub">Hệ thống báo giá</span></div>
+                            <div class="aib-text-content"><span class="aib-tool-title">20. Táº¡o BÃ¡o GiÃ¡ RiÃªng</span><span class="aib-tool-sub">Há» thá»ng bÃ¡o giÃ¡</span></div>
                         </a>
                     </div>
                 </div>
@@ -350,7 +350,7 @@
                 if (e.key === 'Escape') toggleModal(false);
             });
 
-            // --- 2. TỰ ĐỘNG ĐẾM SỐ LƯỢNG APP ---
+            // --- 2. Tá»° Äá»NG Äáº¾M Sá» LÆ¯á»¢NG APP ---
             const panels = document.querySelectorAll('.aib-panel');
             
             panels.forEach(panel => {
@@ -367,5 +367,6 @@
             });
         });
     </script>
+  <script type="module" src="/index.tsx"></script>
 </body>
 </html>
